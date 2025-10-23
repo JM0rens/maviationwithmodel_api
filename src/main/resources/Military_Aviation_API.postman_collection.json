@@ -1,0 +1,710 @@
+{
+	"info": {
+		"_postman_id": "maviation-api-collection-001",
+		"name": "Military Aviation API",
+		"description": "Complete collection of endpoints for the Military Aviation API - Aircraft, Pilots, and Deployments management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "aircraftId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "pilotId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "deploymentId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Aircraft",
+			"item": [
+				{
+					"name": "Get All Aircraft",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/aircraft",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"aircraft"
+							]
+						},
+						"description": "Retrieves all aircraft from the database"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Aircraft by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/aircraft/{{aircraftId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"aircraft",
+								"{{aircraftId}}"
+							]
+						},
+						"description": "Retrieves a specific aircraft by its ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Available Aircraft",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/aircraft/available",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"aircraft",
+								"available"
+							]
+						},
+						"description": "Retrieves all aircraft that are ACTIVE and not currently deployed"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Aircraft - F-16",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.collectionVariables.set('aircraftId', jsonData.data.id);",
+									"        console.log('Aircraft ID saved: ' + jsonData.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"F-16 Fighting Falcon\",\n  \"status\": \"ACTIVE\",\n  \"type\": \"FIGHTER\",\n  \"model\": \"F-16C Block 50\",\n  \"hangarNumber\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/aircraft",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"aircraft"
+							]
+						},
+						"description": "Creates a new F-16 aircraft in hangar 1"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Aircraft - F-35",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"F-35 Lightning II\",\n  \"status\": \"ACTIVE\",\n  \"type\": \"FIGHTER\",\n  \"model\": \"F-35A\",\n  \"hangarNumber\": 2\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/aircraft",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"aircraft"
+							]
+						},
+						"description": "Creates a new F-35 aircraft in hangar 2"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Aircraft - B-2 Bomber",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"B-2 Spirit\",\n  \"status\": \"ACTIVE\",\n  \"type\": \"BOMBER\",\n  \"model\": \"B-2A\",\n  \"hangarNumber\": 10\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/aircraft",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"aircraft"
+							]
+						},
+						"description": "Creates a new B-2 bomber in hangar 10"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Aircraft - C-130 Transport",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"C-130 Hercules\",\n  \"status\": \"ACTIVE\",\n  \"type\": \"TRANSPORT\",\n  \"model\": \"C-130J\",\n  \"hangarNumber\": 20\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/aircraft",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"aircraft"
+							]
+						},
+						"description": "Creates a new C-130 transport aircraft in hangar 20"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Aircraft",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"F-16 Fighting Falcon (Updated)\",\n  \"status\": \"ACTIVE\",\n  \"type\": \"FIGHTER\",\n  \"model\": \"F-16C Block 52\",\n  \"hangarNumber\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/aircraft/{{aircraftId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"aircraft",
+								"{{aircraftId}}"
+							]
+						},
+						"description": "Updates an existing aircraft (uses aircraftId variable)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Aircraft",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/aircraft/{{aircraftId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"aircraft",
+								"{{aircraftId}}"
+							]
+						},
+						"description": "Deletes an aircraft by ID (uses aircraftId variable)"
+					},
+					"response": []
+				}
+			],
+			"description": "Aircraft management endpoints - CRUD operations and availability checks"
+		},
+		{
+			"name": "Pilots",
+			"item": [
+				{
+					"name": "Get All Pilots",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/pilots",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pilots"
+							]
+						},
+						"description": "Retrieves all pilots from the database"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pilot by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/pilots/{{pilotId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pilots",
+								"{{pilotId}}"
+							]
+						},
+						"description": "Retrieves a specific pilot by their ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Available Pilots",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/pilots/available",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pilots",
+								"available"
+							]
+						},
+						"description": "Retrieves all pilots that are ACTIVE and not currently deployed"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Pilot - Captain Smith",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.collectionVariables.set('pilotId', jsonData.data.id);",
+									"        console.log('Pilot ID saved: ' + jsonData.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Captain John Smith\",\n  \"status\": \"ACTIVE\",\n  \"rank\": \"CAPTAIN\",\n  \"flightHours\": 1500,\n  \"specialization\": \"FIGHTER\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pilots",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pilots"
+							]
+						},
+						"description": "Creates a new fighter pilot - Captain Smith"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Pilot - Major Rodriguez",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Major Maria Rodriguez\",\n  \"status\": \"ACTIVE\",\n  \"rank\": \"MAJOR\",\n  \"flightHours\": 2500,\n  \"specialization\": \"FIGHTER\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pilots",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pilots"
+							]
+						},
+						"description": "Creates a new fighter pilot - Major Rodriguez"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Pilot - Colonel Johnson (Bomber)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Colonel Robert Johnson\",\n  \"status\": \"ACTIVE\",\n  \"rank\": \"COLONEL\",\n  \"flightHours\": 3500,\n  \"specialization\": \"BOMBER\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pilots",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pilots"
+							]
+						},
+						"description": "Creates a new bomber pilot - Colonel Johnson"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Pilot - Captain Lee (Transport)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Captain Sarah Lee\",\n  \"status\": \"ACTIVE\",\n  \"rank\": \"CAPTAIN\",\n  \"flightHours\": 1200,\n  \"specialization\": \"TRANSPORT\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pilots",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pilots"
+							]
+						},
+						"description": "Creates a new transport pilot - Captain Lee"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Pilot",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Captain John Smith\",\n  \"status\": \"ACTIVE\",\n  \"rank\": \"MAJOR\",\n  \"flightHours\": 2000,\n  \"specialization\": \"FIGHTER\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/pilots/{{pilotId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pilots",
+								"{{pilotId}}"
+							]
+						},
+						"description": "Updates an existing pilot (uses pilotId variable)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pilot",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/pilots/{{pilotId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pilots",
+								"{{pilotId}}"
+							]
+						},
+						"description": "Deletes a pilot by ID (uses pilotId variable)"
+					},
+					"response": []
+				}
+			],
+			"description": "Pilot management endpoints - CRUD operations and availability checks"
+		},
+		{
+			"name": "Deployments",
+			"item": [
+				{
+					"name": "Get All Deployments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/deployments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"deployments"
+							]
+						},
+						"description": "Retrieves all deployments (active and completed)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Active Deployments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/deployments/active",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"deployments",
+								"active"
+							]
+						},
+						"description": "Retrieves only active (ongoing) deployments"
+					},
+					"response": []
+				},
+				{
+					"name": "Deploy Aircraft - Combat Air Patrol",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.collectionVariables.set('deploymentId', jsonData.data.id);",
+									"        console.log('Deployment ID saved: ' + jsonData.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"aircraftId\": \"{{aircraftId}}\",\n  \"pilotId\": \"{{pilotId}}\",\n  \"mission\": \"Combat Air Patrol - Sector Alpha\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/deployments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"deployments"
+							]
+						},
+						"description": "Deploys an aircraft with a pilot on a Combat Air Patrol mission. Uses aircraftId and pilotId variables."
+					},
+					"response": []
+				},
+				{
+					"name": "Deploy Aircraft - Reconnaissance Mission",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"aircraftId\": \"{{aircraftId}}\",\n  \"pilotId\": \"{{pilotId}}\",\n  \"mission\": \"Reconnaissance Mission - Border Surveillance\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/deployments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"deployments"
+							]
+						},
+						"description": "Deploys an aircraft on a reconnaissance mission"
+					},
+					"response": []
+				},
+				{
+					"name": "Deploy Aircraft - Training Exercise",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"aircraftId\": \"{{aircraftId}}\",\n  \"pilotId\": \"{{pilotId}}\",\n  \"mission\": \"Training Exercise - Advanced Maneuvers\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/deployments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"deployments"
+							]
+						},
+						"description": "Deploys an aircraft for a training exercise"
+					},
+					"response": []
+				},
+				{
+					"name": "Complete Deployment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/deployments/{{deploymentId}}/complete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"deployments",
+								"{{deploymentId}}",
+								"complete"
+							]
+						},
+						"description": "Completes a deployment, returning aircraft and pilot to ACTIVE status. Uses deploymentId variable."
+					},
+					"response": []
+				}
+			],
+			"description": "Deployment management endpoints - Deploy aircraft with pilots and complete missions"
+		},
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "API Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/aircraft",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"aircraft"
+							]
+						},
+						"description": "Simple health check - if this returns data, the API is running"
+					},
+					"response": []
+				}
+			],
+			"description": "Health check endpoint to verify API is running"
+		}
+	]
+}
