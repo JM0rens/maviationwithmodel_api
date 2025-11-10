@@ -30,7 +30,7 @@ public class Aircraft extends MilitaryVehicle {
     public Aircraft(String id, String designation, String serialNumber, AircraftType type, 
                    String model, String manufacturer, int maxSpeed, int range, 
                    int serviceYear, AircraftStatus status) {
-        super(id, designation, serialNumber);
+        super(id, designation, status.toString(), serialNumber);
         this.type = type;
         this.model = model;
         this.manufacturer = manufacturer;
