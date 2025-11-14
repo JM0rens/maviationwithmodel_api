@@ -1,0 +1,351 @@
+{
+  "info": {
+    "name": "Maviation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "b1a3c6c2-8c2f-4b6f-9c33-54e2f1d3e1a1"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "aircraft_id",
+      "value": "A1",
+      "type": "string"
+    },
+    {
+      "key": "pilot_id",
+      "value": "P1",
+      "type": "string"
+    },
+    {
+      "key": "armament_id",
+      "value": "AR1",
+      "type": "string"
+    },
+    {
+      "key": "mission_id",
+      "value": "M1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Aircraft",
+      "item": [
+        {
+          "name": "List all aircraft",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/aircraft",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "aircraft"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get aircraft by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/aircraft/{{aircraft_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "aircraft",
+                "{{aircraft_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create aircraft",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"A1\",\n  \"designation\": \"Falcon-01\",\n  \"serialNumber\": \"SN-1001\",\n  \"type\": \"FIGHTER\",\n  \"model\": \"F-16\",\n  \"manufacturer\": \"Lockheed Martin\",\n  \"maxSpeed\": 2400,\n  \"range\": 4220,\n  \"serviceYear\": 2010,\n  \"hangarNumber\": 12,\n  \"pilotId\": \"{{pilot_id}}\",\n  \"mission\": \"{{mission_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/aircraft",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "aircraft"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update aircraft",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"designation\": \"Falcon-01-Updated\",\n  \"type\": \"FIGHTER\",\n  \"model\": \"F-16C\",\n  \"manufacturer\": \"Lockheed Martin\",\n  \"maxSpeed\": 2450,\n  \"range\": 4300,\n  \"serviceYear\": 2011,\n  \"hangarNumber\": 15,\n  \"pilotId\": \"{{pilot_id}}\",\n  \"mission\": \"{{mission_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/aircraft/{{aircraft_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "aircraft",
+                "{{aircraft_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete aircraft",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/aircraft/{{aircraft_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "aircraft",
+                "{{aircraft_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pilots",
+      "item": [
+        {
+          "name": "List all pilots",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/pilots",
+              "host": ["{{base_url}}"],
+              "path": ["api", "pilots"]
+            }
+          }
+        },
+        {
+          "name": "Get pilot by id",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/pilots/{{pilot_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "pilots", "{{pilot_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Create pilot",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"P1\",\n  \"name\": \"John Doe\",\n  \"serviceNumber\": \"SV-2001\",\n  \"rank\": \"CAPTAIN\",\n  \"flightHours\": 1500,\n  \"specialization\": \"FIGHTER\",\n  \"licenseNumber\": \"LIC-9988\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/pilots",
+              "host": ["{{base_url}}"],
+              "path": ["api", "pilots"]
+            }
+          }
+        },
+        {
+          "name": "Update pilot",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"serviceNumber\": \"SV-2001\",\n  \"rank\": \"MAJOR\",\n  \"flightHours\": 1600,\n  \"specialization\": \"FIGHTER\",\n  \"licenseNumber\": \"LIC-9988\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/pilots/{{pilot_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "pilots", "{{pilot_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete pilot",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/pilots/{{pilot_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "pilots", "{{pilot_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Armaments",
+      "item": [
+        {
+          "name": "List all armaments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/armaments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "armaments"]
+            }
+          }
+        },
+        {
+          "name": "Get armament by id",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/armaments/{{armament_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "armaments", "{{armament_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Create armament",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"AR1\",\n  \"name\": \"AIM-120 AMRAAM\",\n  \"armamentType\": \"MISSILE\",\n  \"model\": \"AIM-120C\",\n  \"manufacturer\": \"Raytheon\",\n  \"quantity\": 4,\n  \"caliber\": \"178mm\",\n  \"weight\": 152,\n  \"range\": 75000,\n  \"aircraft\": null,\n  \"mission\": null,\n  \"status\": \"READY\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/armaments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "armaments"]
+            }
+          }
+        },
+        {
+          "name": "Update armament",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AIM-120 AMRAAM\",\n  \"armamentType\": \"MISSILE\",\n  \"model\": \"AIM-120D\",\n  \"manufacturer\": \"Raytheon\",\n  \"quantity\": 6,\n  \"caliber\": \"178mm\",\n  \"weight\": 152,\n  \"range\": 90000,\n  \"status\": \"READY\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/armaments/{{armament_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "armaments", "{{armament_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete armament",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/armaments/{{armament_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "armaments", "{{armament_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Missions",
+      "item": [
+        {
+          "name": "List all missions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/missions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "missions"]
+            }
+          }
+        },
+        {
+          "name": "Get mission by id",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/missions/{{mission_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "missions", "{{mission_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Create mission",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"M1\",\n  \"name\": \"Operation Dawn\",\n  \"description\": \"Dawn operation description\",\n  \"startDate\": \"2025-11-14T08:00:00\",\n  \"endDate\": \"2025-11-14T12:00:00\",\n  \"status\": \"PLANNED\",\n  \"missionType\": \"AIR_SUPERIORITY\",\n  \"priority\": \"HIGH\",\n  \"targetLocation\": \"Sector Alpha\",\n  \"targetCoordinates\": \"10.9876,-74.7890\",\n  \"objective\": \"Secure airspace\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/missions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "missions"]
+            }
+          }
+        },
+        {
+          "name": "Update mission",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Operation Dawn Updated\",\n  \"description\": \"Updated description\",\n  \"startDate\": \"2025-11-14T09:00:00\",\n  \"endDate\": \"2025-11-14T13:30:00\",\n  \"status\": \"IN_PROGRESS\",\n  \"missionType\": \"AIR_SUPERIORITY\",\n  \"priority\": \"CRITICAL\",\n  \"targetLocation\": \"Sector Bravo\",\n  \"targetCoordinates\": \"10.9976,-74.7990\",\n  \"objective\": \"Maintain air superiority\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/missions/{{mission_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "missions", "{{mission_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete mission",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/missions/{{mission_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "missions", "{{mission_id}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
