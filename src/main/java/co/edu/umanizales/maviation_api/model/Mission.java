@@ -1,7 +1,6 @@
 package co.edu.umanizales.maviation_api.model;
 
 import co.edu.umanizales.maviation_api.model.enums.MissionPriority;
-import co.edu.umanizales.maviation_api.model.enums.MissionStatus;
 import co.edu.umanizales.maviation_api.model.enums.MissionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,21 +28,19 @@ public class Mission extends MilitaryOperation {
     private List<Armament> armaments;
     private Pilot missionCommander;
     private List<TacticalReport> tacticalReports;
-    private MissionStatus status;
     private String objective;
     private String weatherConditions;
     private String intelligenceReport;
     
     public Mission(String id, String name, String description, LocalDateTime startDate, 
                   LocalDateTime endDate, MissionType missionType, MissionPriority priority,
-                  String targetLocation, String targetCoordinates, String objective) {
-        super(id, name, description, startDate, endDate);
+                  String targetLocation, String targetCoordinates, String objective, String status) {
+        super(id, name, description, startDate, endDate, status);
         this.missionType = missionType;
         this.priority = priority;
         this.targetLocation = targetLocation;
         this.targetCoordinates = targetCoordinates;
         this.objective = objective;
-        this.status = MissionStatus.PLANNED;
     }
     
     public void addPilot(Pilot pilot) {

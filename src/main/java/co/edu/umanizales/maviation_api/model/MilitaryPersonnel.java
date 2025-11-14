@@ -1,5 +1,6 @@
 package co.edu.umanizales.maviation_api.model;
 
+import co.edu.umanizales.maviation_api.model.enums.MilitaryRank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * Abstract base class for all military personnel
  */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

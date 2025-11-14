@@ -1,5 +1,6 @@
 package co.edu.umanizales.maviation_api.model;
 
+import co.edu.umanizales.maviation_api.model.enums.MilitaryRank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,4 +33,5 @@ public class PilotNew extends MilitaryPersonnel {
         this.currentAircraftId = currentAircraftId;
         this.squadronId = squadronId;
     }
+
 }

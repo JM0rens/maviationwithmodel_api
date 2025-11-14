@@ -12,10 +12,8 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Pilot extends MilitaryPersonnel {
-    private MilitaryRank rank;
     private int flightHours;
     private AircraftType specialization;
     private String licenseNumber;
@@ -23,16 +21,41 @@ public class Pilot extends MilitaryPersonnel {
     private Aircraft currentAircraft;
     private Squadron squadron;
     private List<Mission> completedMissions;
-    private PilotStatus status;
+    private PilotStatus pilotStatus;
     
     public Pilot(String id, String name, String serviceNumber, MilitaryRank rank, 
                 int flightHours, AircraftType specialization, String licenseNumber) {
-        super(id, name, serviceNumber);
-        this.rank = rank;
+        super();
+        this.setId(id);
+        this.setName(name);
+        this.setServiceNumber(serviceNumber);
+        this.setRank(rank);
         this.flightHours = flightHours;
         this.specialization = specialization;
         this.licenseNumber = licenseNumber;
         this.missionsCompleted = 0;
+    }
+
+    // Overloaded constructor for CSV repository compatibility
+    public Pilot(String id, String name, String status, String rank,
+                 int flightHours, String specialization) {
+        super();
+        this.setId(id);
+        this.setName(name);
+        this.setStatus(status);
+        try {
+            this.setRank(rank != null && !rank.isBlank() ? MilitaryRank.valueOf(rank) : null);
+        } catch (IllegalArgumentException ex) {
+            this.setRank(null);
+        }
+        this.flightHours = flightHours;
+        try {
+            this.specialization = (specialization != null && !specialization.isBlank())
+                    ? AircraftType.valueOf(specialization)
+                    : null;
+        } catch (IllegalArgumentException ex) {
+            this.specialization = null;
+        }
     }
     
     public void addFlightHours(int hours) {

@@ -20,12 +20,15 @@ public class Aircraft extends MilitaryVehicle {
     private int maxSpeed; // km/h
     private int range; // km
     private int serviceYear;
-    private AircraftStatus status;
     private Pilot currentPilot;
     private Mission currentMission;
     private Squadron squadron;
     private List<Maintenance> maintenanceHistory;
     private List<Armament> armaments;
+    // Backward-compatibility fields used by repositories/services
+    private Integer hangarNumber; // optional
+    private String pilotId; // optional mirror of currentPilot
+    private String mission; // optional mirror of currentMission
     
     public Aircraft(String id, String designation, String serialNumber, AircraftType type, 
                    String model, String manufacturer, int maxSpeed, int range, 
@@ -37,6 +40,24 @@ public class Aircraft extends MilitaryVehicle {
         this.maxSpeed = maxSpeed;
         this.range = range;
         this.serviceYear = serviceYear;
-        this.status = status;
     }
+
+    // Overloaded constructor for CSV repository compatibility
+    public Aircraft(String id, String name, String status, String type,
+                    String model, Integer hangarNumber, String pilotId, String mission) {
+        super(id, name, status, null);
+        try {
+            this.type = type != null ? AircraftType.valueOf(type) : null;
+        } catch (IllegalArgumentException ex) {
+            this.type = null;
+        }
+        this.model = model;
+        this.hangarNumber = hangarNumber;
+        this.pilotId = pilotId;
+        this.mission = mission;
+    }
+
+    // Compatibility accessors for repository code expecting getName()
+    public String getName() { return getDesignation(); }
+    public void setName(String name) { setDesignation(name); }
 }

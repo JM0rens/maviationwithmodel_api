@@ -1,5 +1,6 @@
 package co.edu.umanizales.maviation_api.model;
 
+import jdk.jshell.Snippet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class Armament {
     private String caliber;
     private Integer weight; // in kg
     private Integer range; // in meters
-    private String aircraftId; // Composition: armament belongs to aircraft
-    private String missionId; // Composition: armament used in mission
-    private String status; // READY, DEPLOYED, MAINTENANCE, DEPLETED
+    private  Aircraft aircraft; // Composition: armament belongs to aircraft
+    private Mission mission; // Composition: armament used in mission
+    private Snippet.Status status; // READY, DEPLOYED, MAINTENANCE, DEPLETED
 }
