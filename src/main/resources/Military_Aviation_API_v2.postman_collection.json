@@ -1,0 +1,142 @@
+{
+  "info": {
+    "_postman_id": "maviation-api-collection-002",
+    "name": "Military Aviation API v2",
+    "description": "Updated collection aligned with recent model refactors (enums and object references).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080", "type": "string" },
+    { "key": "aircraftId", "value": "", "type": "string" },
+    { "key": "pilotId", "value": "", "type": "string" },
+    { "key": "deploymentId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Aircraft",
+      "item": [
+        {
+          "name": "Get All Aircraft",
+          "request": { "method": "GET", "header": [],
+            "url": { "raw": "{{baseUrl}}/api/aircraft", "host": ["{{baseUrl}}"], "path": ["api","aircraft"] },
+            "description": "Retrieves all aircraft"
+          }
+        },
+        {
+          "name": "Get Aircraft by ID",
+          "request": { "method": "GET", "header": [],
+            "url": { "raw": "{{baseUrl}}/api/aircraft/{{aircraftId}}", "host": ["{{baseUrl}}"], "path": ["api","aircraft","{{aircraftId}}"] },
+            "description": "Retrieves an aircraft by ID"
+          }
+        },
+        {
+          "name": "Create Aircraft (enum fields)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "if (pm.response.code === 201) {",
+              "  const id = pm.response.json()?.data?.id;",
+              "  if (id) pm.collectionVariables.set('aircraftId', id);",
+              "}"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"F-16 Fighting Falcon\",\n  \"status\": \"ACTIVE\",\n  \"type\": \"FIGHTER\",\n  \"model\": \"F-16C Block 50\",\n  \"hangarNumber\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/api/aircraft", "host": ["{{baseUrl}}"], "path": ["api","aircraft"] },
+            "description": "Creates an aircraft. status/type must be enum values."
+          }
+        },
+        {
+          "name": "Update Aircraft",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"F-16 Updated\",\n  \"status\": \"ACTIVE\",\n  \"type\": \"FIGHTER\",\n  \"model\": \"F-16C Block 52\",\n  \"hangarNumber\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/api/aircraft/{{aircraftId}}", "host": ["{{baseUrl}}"], "path": ["api","aircraft","{{aircraftId}}"] }
+          }
+        },
+        {
+          "name": "Delete Aircraft",
+          "request": { "method": "DELETE", "header": [],
+            "url": { "raw": "{{baseUrl}}/api/aircraft/{{aircraftId}}", "host": ["{{baseUrl}}"], "path": ["api","aircraft","{{aircraftId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pilots",
+      "item": [
+        {
+          "name": "Get All Pilots",
+          "request": { "method": "GET", "header": [],
+            "url": { "raw": "{{baseUrl}}/api/pilots", "host": ["{{baseUrl}}"], "path": ["api","pilots"] }
+          }
+        },
+        {
+          "name": "Create Pilot (enum fields)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "if (pm.response.code === 201) {",
+              "  const id = pm.response.json()?.data?.id;",
+              "  if (id) pm.collectionVariables.set('pilotId', id);",
+              "}"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Captain John Smith\",\n  \"status\": \"ACTIVE\",\n  \"rank\": \"CAPTAIN\",\n  \"flightHours\": 1500,\n  \"specialization\": \"FIGHTER\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/pilots", "host": ["{{baseUrl}}"], "path": ["api","pilots"] }
+          }
+        }
+     ]
+    },
+    {
+      "name": "Deployments",
+      "item": [
+        {
+          "name": "Get All Deployments",
+          "request": { "method": "GET", "header": [],
+            "url": { "raw": "{{baseUrl}}/api/deployments", "host": ["{{baseUrl}}"], "path": ["api","deployments"] }
+          }
+        },
+        {
+          "name": "Deploy Aircraft (IDs in body)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "if (pm.response.code === 201) {",
+              "  const id = pm.response.json()?.data?.id;",
+              "  if (id) pm.collectionVariables.set('deploymentId', id);",
+              "}"
+            ]}
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": { "mode": "raw", "raw": "{\n  \"aircraftId\": \"{{aircraftId}}\",\n  \"pilotId\": \"{{pilotId}}\",\n  \"mission\": \"Combat Air Patrol - Sector Alpha\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/deployments", "host": ["{{baseUrl}}"], "path": ["api","deployments"] }
+          }
+        },
+        {
+          "name": "Complete Deployment",
+          "request": { "method": "PUT", "header": [],
+            "url": { "raw": "{{baseUrl}}/api/deployments/{{deploymentId}}/complete", "host": ["{{baseUrl}}"], "path": ["api","deployments","{{deploymentId}}","complete"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        { "name": "API Health Check", "request": { "method": "GET", "header": [],
+          "url": { "raw": "{{baseUrl}}/api/aircraft", "host": ["{{baseUrl}}"], "path": ["api","aircraft"] },
+          "description": "Basic health check"
+        }}
+      ]
+    }
+  ]
+}
