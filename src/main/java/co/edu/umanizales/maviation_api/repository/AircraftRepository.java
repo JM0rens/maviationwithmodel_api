@@ -36,7 +36,7 @@ public class AircraftRepository extends CsvRepository<Aircraft> {
             parts[3],
             parts[4],
             parts[5].isEmpty() ? null : Integer.parseInt(parts[5]),
-            parts[6].isEmpty() ? null : parts[6],
+            null, // legacy CSV provides only pilotId; object resolution should happen at service layer
             parts[7].isEmpty() ? null : parts[7]
         );
     }
@@ -50,7 +50,7 @@ public class AircraftRepository extends CsvRepository<Aircraft> {
             aircraft.getType(),
             aircraft.getModel(),
             aircraft.getHangarNumber() != null ? aircraft.getHangarNumber() : "",
-            aircraft.getPilotId() != null ? aircraft.getPilotId() : "",
+            (aircraft.getPilot() != null && aircraft.getPilot().getId() != null) ? aircraft.getPilot().getId() : "",
             aircraft.getMission() != null ? aircraft.getMission() : ""
         );
     }

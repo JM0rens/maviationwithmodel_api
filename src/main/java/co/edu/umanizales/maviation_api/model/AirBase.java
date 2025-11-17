@@ -1,9 +1,11 @@
 package co.edu.umanizales.maviation_api.model;
 
+import co.edu.umanizales.maviation_api.model.enums.BaseCommander;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import co.edu.umanizales.maviation_api.model.enums.AirBaseStatus;
 import java.util.List;
 
 /**
@@ -18,12 +20,12 @@ public class AirBase {
     private String name;
     private String location;
     private String country;
-    private String baseCommanderId;
+    private BaseCommander baseCommander;
     private List<String> squadronIds; // Aggregation: squadrons at this base
     private List<String> vehicleIds; // Aggregation: all vehicles at this base
     private Integer runwayCount;
     private Integer hangarCapacity;
-    private String status; // OPERATIONAL, MAINTENANCE, STANDBY, CLOSED
-    private Double latitude;
-    private Double longitude;
+    private AirBaseStatus status; // OPERATIONAL, MAINTENANCE, STANDBY, CLOSED
+    private double latitude;
+    private double longitude;
 }

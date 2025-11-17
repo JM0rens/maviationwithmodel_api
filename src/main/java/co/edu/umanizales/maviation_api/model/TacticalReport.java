@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
  */
 public record TacticalReport(
     String id,
-    String missionId,
-    String reporterId, // Pilot or commander who created the report
+    Mission mission,
+    MilitaryPersonnel reporter, // Pilot or commander who created the report
     LocalDateTime reportDate,
     String reportType, // SITREP, DEBRIEF, COMBAT, INTELLIGENCE, WEATHER
     String title,

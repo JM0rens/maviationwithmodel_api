@@ -27,7 +27,7 @@ public class Aircraft extends MilitaryVehicle {
     private List<Armament> armaments;
     // Backward-compatibility fields used by repositories/services
     private Integer hangarNumber; // optional
-    private String pilotId; // optional mirror of currentPilot
+    private Pilot pilot; // optional mirror of currentPilot
     private String mission; // optional mirror of currentMission
     
     public Aircraft(String id, String designation, String serialNumber, AircraftType type, 
@@ -44,7 +44,7 @@ public class Aircraft extends MilitaryVehicle {
 
     // Overloaded constructor for CSV repository compatibility
     public Aircraft(String id, String name, String status, String type,
-                    String model, Integer hangarNumber, String pilotId, String mission) {
+                    String model, Integer hangarNumber, Pilot pilot, String mission) {
         super(id, name, status, null);
         try {
             this.type = type != null ? AircraftType.valueOf(type) : null;
@@ -53,7 +53,7 @@ public class Aircraft extends MilitaryVehicle {
         }
         this.model = model;
         this.hangarNumber = hangarNumber;
-        this.pilotId = pilotId;
+        this.pilot = pilot;
         this.mission = mission;
     }
 

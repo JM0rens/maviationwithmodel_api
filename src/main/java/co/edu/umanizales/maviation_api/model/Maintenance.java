@@ -1,5 +1,7 @@
 package co.edu.umanizales.maviation_api.model;
 
+import co.edu.umanizales.maviation_api.model.enums.MaintenanceStatus;
+import co.edu.umanizales.maviation_api.model.enums.MaintenanceType;
 import java.time.LocalDateTime;
 
 /**
@@ -8,13 +10,13 @@ import java.time.LocalDateTime;
  */
 public record Maintenance(
     String id,
-    String aircraftId,
-    String maintenanceType, // ROUTINE, PREVENTIVE, CORRECTIVE, EMERGENCY, OVERHAUL
+    Aircraft aircraft,
+    MaintenanceType maintenanceType, // ROUTINE, PREVENTIVE, CORRECTIVE, EMERGENCY, OVERHAUL
     String description,
     LocalDateTime scheduledDate,
     LocalDateTime completedDate,
-    String technicianId,
-    String status, // SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED
+    MilitaryPersonnel technician,
+    MaintenanceStatus status, // SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED
     Integer estimatedHours,
     Integer actualHours,
     String partsReplaced,
