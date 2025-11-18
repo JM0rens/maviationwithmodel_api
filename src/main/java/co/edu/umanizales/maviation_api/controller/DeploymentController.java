@@ -5,7 +5,6 @@ import co.edu.umanizales.maviation_api.dto.ResponseDTO;
 import co.edu.umanizales.maviation_api.model.Deployment;
 import co.edu.umanizales.maviation_api.model.Mission;
 import co.edu.umanizales.maviation_api.model.enums.DeploymentStatus;
-import co.edu.umanizales.maviation_api.repository.DeploymentRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,22 +15,17 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/deployments")
 public class DeploymentController {
-    private final DeploymentRepository deploymentRepository;
-
-    public DeploymentController(DeploymentRepository deploymentRepository) {
-        this.deploymentRepository = deploymentRepository;
-    }
+    private static final List<Deployment> DEPLOYMENTS = new ArrayList<>();
 
     @GetMapping
     public ResponseEntity<ResponseDTO> getAll() {
-        return ResponseEntity.ok(new ResponseDTO(true, "OK", deploymentRepository.findAll()));
+        return ResponseEntity.ok(new ResponseDTO(true, "OK", DEPLOYMENTS));
     }
 
     @GetMapping("/active")
     public ResponseEntity<ResponseDTO> getActive() {
-        List<Deployment> all = deploymentRepository.findAll();
         List<Deployment> active = new ArrayList<>();
-        for (Deployment d : all) {
+        for (Deployment d : DEPLOYMENTS) {
             if (d.getStatus() == DeploymentStatus.ACTIVE) {
                 active.add(d);
             }
@@ -57,22 +51,20 @@ public class DeploymentController {
                 LocalDateTime.now(),
                 DeploymentStatus.ACTIVE
         );
-        deploymentRepository.save(deployment);
+        DEPLOYMENTS.add(deployment);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDTO(true, "Deployment created", Map.of("id", id)));
     }
 
     @PutMapping("/{id}/complete")
     public ResponseEntity<ResponseDTO> complete(@PathVariable String id) {
-        List<Deployment> all = new ArrayList<>(deploymentRepository.findAll());
-        Optional<Deployment> opt = all.stream().filter(d -> Objects.equals(d.getId(), id)).findFirst();
-        if (opt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO(false, "Deployment not found", null));
+        for (Deployment d : DEPLOYMENTS) {
+            if (Objects.equals(d.getId(), id)) {
+                d.setStatus(DeploymentStatus.COMPLETED);
+                return ResponseEntity.ok(new ResponseDTO(true, "Deployment completed", Map.of("id", id)));
+            }
         }
-        Deployment d = opt.get();
-        d.setStatus(DeploymentStatus.COMPLETED);
-        deploymentRepository.saveAll(all);
-        return ResponseEntity.ok(new ResponseDTO(true, "Deployment completed", Map.of("id", id)));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ResponseDTO(false, "Deployment not found", null));
     }
 }

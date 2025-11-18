@@ -1,0 +1,312 @@
+{
+  "info": {
+    "_postman_id": "maviation-api-collection-full-001",
+    "name": "Military Aviation API - Full",
+    "description": "Colección completa para probar controladores en memoria (sin persistencia). Incluye Aircraft, Pilots, Deployments, AirBases, Armaments, Missions, Scheduled Flights, Squadrons, Maintenance, Tactical Reports.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080", "type": "string" },
+    { "key": "aircraftId", "value": "", "type": "string" },
+    { "key": "pilotId", "value": "", "type": "string" },
+    { "key": "deploymentId", "value": "", "type": "string" },
+    { "key": "airBaseId", "value": "", "type": "string" },
+    { "key": "armamentId", "value": "", "type": "string" },
+    { "key": "missionId", "value": "", "type": "string" },
+    { "key": "flightId", "value": "", "type": "string" },
+    { "key": "squadronId", "value": "", "type": "string" },
+    { "key": "maintenanceId", "value": "", "type": "string" },
+    { "key": "reportId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "API Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/aircraft", "host": ["{{baseUrl}}"], "path": ["api","aircraft"] },
+            "description": "Si responde 200, el API está arriba."
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Aircraft",
+      "item": [
+        { "name": "List", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/aircraft", "host": ["{{baseUrl}}"], "path": ["api","aircraft"] } } },
+        { "name": "Available", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/aircraft/available", "host": ["{{baseUrl}}"], "path": ["api","aircraft","available"] } } },
+        { "name": "Get by ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/aircraft/{{aircraftId}}", "host": ["{{baseUrl}}"], "path": ["api","aircraft","{{aircraftId}}"] } } },
+        {
+          "name": "Create",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "if (pm.response.code === 201) { const id = pm.response.json()?.data?.id; if (id) pm.collectionVariables.set('aircraftId', id); }"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"F-16 Fighting Falcon\",\n  \"status\": \"ACTIVE\",\n  \"type\": \"FIGHTER\",\n  \"model\": \"F-16C Block 50\",\n  \"hangarNumber\": 1,\n  \"pilotId\": null,\n  \"mission\": null\n}"},
+            "url": { "raw": "{{baseUrl}}/api/aircraft", "host": ["{{baseUrl}}"], "path": ["api","aircraft"] }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"F-16 Updated\",\n  \"status\": \"ACTIVE\",\n  \"type\": \"FIGHTER\",\n  \"model\": \"F-16C Block 52\",\n  \"hangarNumber\": 2,\n  \"pilotId\": null,\n  \"mission\": \"Training\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/aircraft/{{aircraftId}}", "host": ["{{baseUrl}}"], "path": ["api","aircraft","{{aircraftId}}"] }
+          }
+        },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/aircraft/{{aircraftId}}", "host": ["{{baseUrl}}"], "path": ["api","aircraft","{{aircraftId}}"] } } }
+      ]
+    },
+
+    {
+      "name": "Pilots",
+      "item": [
+        { "name": "List", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/pilots", "host": ["{{baseUrl}}"], "path": ["api","pilots"] } } },
+        { "name": "Available", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/pilots/available", "host": ["{{baseUrl}}"], "path": ["api","pilots","available"] } } },
+        { "name": "Get by ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/pilots/{{pilotId}}", "host": ["{{baseUrl}}"], "path": ["api","pilots","{{pilotId}}"] } } },
+        {
+          "name": "Create",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "if (pm.response.code === 201) { const id = pm.response.json()?.data?.id; if (id) pm.collectionVariables.set('pilotId', id); }"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"Captain John Smith\",\n  \"status\": \"ACTIVE\",\n  \"rank\": \"CAPTAIN\",\n  \"flightHours\": 1500,\n  \"specialization\": \"FIGHTER\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/pilots", "host": ["{{baseUrl}}"], "path": ["api","pilots"] }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"Major John Smith\",\n  \"status\": \"ACTIVE\",\n  \"rank\": \"MAJOR\",\n  \"flightHours\": 1800,\n  \"specialization\": \"FIGHTER\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/pilots/{{pilotId}}", "host": ["{{baseUrl}}"], "path": ["api","pilots","{{pilotId}}"] }
+          }
+        },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/pilots/{{pilotId}}", "host": ["{{baseUrl}}"], "path": ["api","pilots","{{pilotId}}"] } } }
+      ]
+    },
+
+    {
+      "name": "Deployments",
+      "item": [
+        { "name": "List", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/deployments", "host": ["{{baseUrl}}"], "path": ["api","deployments"] } } },
+        { "name": "Active", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/deployments/active", "host": ["{{baseUrl}}"], "path": ["api","deployments","active"] } } },
+        {
+          "name": "Create",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "if (pm.response.code === 201) { const id = pm.response.json()?.data?.id; if (id) pm.collectionVariables.set('deploymentId', id); }"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"aircraftId\": \"{{aircraftId}}\",\n  \"pilotId\": \"{{pilotId}}\",\n  \"mission\": \"Patrol Alpha\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/deployments", "host": ["{{baseUrl}}"], "path": ["api","deployments"] }
+          }
+        },
+        { "name": "Complete", "request": { "method": "PUT", "header": [], "url": { "raw": "{{baseUrl}}/api/deployments/{{deploymentId}}/complete", "host": ["{{baseUrl}}"], "path": ["api","deployments","{{deploymentId}}","complete"] } } }
+      ]
+    },
+
+    {
+      "name": "AirBases",
+      "item": [
+        { "name": "List", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/airbases", "host": ["{{baseUrl}}"], "path": ["api","airbases"] } } },
+        { "name": "Get by ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/airbases/{{airBaseId}}", "host": ["{{baseUrl}}"], "path": ["api","airbases","{{airBaseId}}"] } } },
+        {
+          "name": "Create",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "if (pm.response.code === 201) { const id = pm.response.json()?.data?.id; if (id) pm.collectionVariables.set('airBaseId', id); }"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"Base Aerea Central\",\n  \"location\": \"Sector Norte\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/airbases", "host": ["{{baseUrl}}"], "path": ["api","airbases"] }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"Base Aerea Central (UPD)\",\n  \"location\": \"Sector Norte 2\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/airbases/{{airBaseId}}", "host": ["{{baseUrl}}"], "path": ["api","airbases","{{airBaseId}}"] }
+          }
+        },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/airbases/{{airBaseId}}", "host": ["{{baseUrl}}"], "path": ["api","airbases","{{airBaseId}}"] } } }
+      ]
+    },
+
+    {
+      "name": "Armaments",
+      "item": [
+        { "name": "List", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/armaments", "host": ["{{baseUrl}}"], "path": ["api","armaments"] } } },
+        { "name": "Get by ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/armaments/{{armamentId}}", "host": ["{{baseUrl}}"], "path": ["api","armaments","{{armamentId}}"] } } },
+        {
+          "name": "Create",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "if (pm.response.code === 201) { const id = pm.response.json()?.data?.id; if (id) pm.collectionVariables.set('armamentId', id); }"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"AIM-9 Sidewinder\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/armaments", "host": ["{{baseUrl}}"], "path": ["api","armaments"] }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"AIM-9X Sidewinder\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/armaments/{{armamentId}}", "host": ["{{baseUrl}}"], "path": ["api","armaments","{{armamentId}}"] }
+          }
+        },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/armaments/{{armamentId}}", "host": ["{{baseUrl}}"], "path": ["api","armaments","{{armamentId}}"] } } }
+      ]
+    },
+
+    {
+      "name": "Missions",
+      "item": [
+        { "name": "List", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/missions", "host": ["{{baseUrl}}"], "path": ["api","missions"] } } },
+        { "name": "Get by ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/missions/{{missionId}}", "host": ["{{baseUrl}}"], "path": ["api","missions","{{missionId}}"] } } },
+        {
+          "name": "Create",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "if (pm.response.code === 201) { const id = pm.response.json()?.data?.id; if (id) pm.collectionVariables.set('missionId', id); }"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"Mission Bravo\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/missions", "host": ["{{baseUrl}}"], "path": ["api","missions"] }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"Mission Bravo (UPD)\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/missions/{{missionId}}", "host": ["{{baseUrl}}"], "path": ["api","missions","{{missionId}}"] }
+          }
+        },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/missions/{{missionId}}", "host": ["{{baseUrl}}"], "path": ["api","missions","{{missionId}}"] } } }
+      ]
+    },
+
+    {
+      "name": "Scheduled Flights",
+      "item": [
+        { "name": "List", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/scheduled-flights", "host": ["{{baseUrl}}"], "path": ["api","scheduled-flights"] } } },
+        { "name": "Get by ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/scheduled-flights/{{flightId}}", "host": ["{{baseUrl}}"], "path": ["api","scheduled-flights","{{flightId}}"] } } },
+        {
+          "name": "Create",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "if (pm.response.code === 201) { const id = pm.response.json()?.data?.id; if (id) pm.collectionVariables.set('flightId', id); }"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"flightNumber\": \"FL-001\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/scheduled-flights", "host": ["{{baseUrl}}"], "path": ["api","scheduled-flights"] }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"flightNumber\": \"FL-002\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/scheduled-flights/{{flightId}}", "host": ["{{baseUrl}}"], "path": ["api","scheduled-flights","{{flightId}}"] }
+          }
+        },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/scheduled-flights/{{flightId}}", "host": ["{{baseUrl}}"], "path": ["api","scheduled-flights","{{flightId}}"] } } }
+      ]
+    },
+
+    {
+      "name": "Squadrons",
+      "item": [
+        { "name": "List", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/squadrons", "host": ["{{baseUrl}}"], "path": ["api","squadrons"] } } },
+        { "name": "Get by ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/squadrons/{{squadronId}}", "host": ["{{baseUrl}}"], "path": ["api","squadrons","{{squadronId}}"] } } },
+        {
+          "name": "Create",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "if (pm.response.code === 201) { const id = pm.response.json()?.data?.id; if (id) pm.collectionVariables.set('squadronId', id); }"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"1st Fighter Squadron\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/squadrons", "host": ["{{baseUrl}}"], "path": ["api","squadrons"] }
+          }
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"name\": \"1st Fighter Squadron (UPD)\"\n}"},
+            "url": { "raw": "{{baseUrl}}/api/squadrons/{{squadronId}}", "host": ["{{baseUrl}}"], "path": ["api","squadrons","{{squadronId}}"] }
+          }
+        },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/squadrons/{{squadronId}}", "host": ["{{baseUrl}}"], "path": ["api","squadrons","{{squadronId}}"] } } }
+      ]
+    },
+
+    {
+      "name": "Maintenance",
+      "item": [
+        { "name": "List", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/maintenance", "host": ["{{baseUrl}}"], "path": ["api","maintenance"] } } },
+        { "name": "Get by ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/maintenance/{{maintenanceId}}", "host": ["{{baseUrl}}"], "path": ["api","maintenance","{{maintenanceId}}"] } } },
+        {
+          "name": "Create (record)",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "if (pm.response.code === 201) { const id = pm.response.json()?.data?.id; if (id) pm.collectionVariables.set('maintenanceId', id); }"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"id\": \"\",\n  \"aircraft\": null,\n  \"maintenanceType\": null,\n  \"description\": null,\n  \"scheduledDate\": null,\n  \"completedDate\": null,\n  \"technician\": null,\n  \"status\": null,\n  \"estimatedHours\": null,\n  \"actualHours\": null,\n  \"partsReplaced\": null,\n  \"cost\": null\n}"},
+            "url": { "raw": "{{baseUrl}}/api/maintenance", "host": ["{{baseUrl}}"], "path": ["api","maintenance"] }
+          }
+        },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/maintenance/{{maintenanceId}}", "host": ["{{baseUrl}}"], "path": ["api","maintenance","{{maintenanceId}}"] } } }
+      ]
+    },
+
+    {
+      "name": "Tactical Reports",
+      "item": [
+        { "name": "List", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/tactical-reports", "host": ["{{baseUrl}}"], "path": ["api","tactical-reports"] } } },
+        { "name": "Get by ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/tactical-reports/{{reportId}}", "host": ["{{baseUrl}}"], "path": ["api","tactical-reports","{{reportId}}"] } } },
+        {
+          "name": "Create (record)",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "if (pm.response.code === 201) { const id = pm.response.json()?.data?.id; if (id) pm.collectionVariables.set('reportId', id); }"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw": "{\n  \"id\": \"\",\n  \"mission\": null,\n  \"reporter\": null,\n  \"reportDate\": null,\n  \"reportType\": null,\n  \"title\": null,\n  \"content\": null,\n  \"priority\": null,\n  \"classification\": null,\n  \"targetDetails\": null,\n  \"enemyActivity\": null,\n  \"weatherConditions\": null,\n  \"recommendations\": null\n}"},
+            "url": { "raw": "{{baseUrl}}/api/tactical-reports", "host": ["{{baseUrl}}"], "path": ["api","tactical-reports"] }
+          }
+        },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/tactical-reports/{{reportId}}", "host": ["{{baseUrl}}"], "path": ["api","tactical-reports","{{reportId}}"] } } }
+      ]
+    }
+  ]
+}

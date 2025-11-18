@@ -5,7 +5,6 @@ import co.edu.umanizales.maviation_api.dto.ResponseDTO;
 import co.edu.umanizales.maviation_api.model.Pilot;
 import co.edu.umanizales.maviation_api.model.enums.AircraftType;
 import co.edu.umanizales.maviation_api.model.enums.MilitaryRank;
-import co.edu.umanizales.maviation_api.repository.PilotRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,22 +14,17 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/pilots")
 public class PilotController {
-    private final PilotRepository pilotRepository;
-
-    public PilotController(PilotRepository pilotRepository) {
-        this.pilotRepository = pilotRepository;
-    }
+    private static final List<Pilot> PILOTS = new ArrayList<>();
 
     @GetMapping
     public ResponseEntity<ResponseDTO> getAll() {
-        return ResponseEntity.ok(new ResponseDTO(true, "OK", pilotRepository.findAll()));
+        return ResponseEntity.ok(new ResponseDTO(true, "OK", PILOTS));
     }
 
     @GetMapping("/available")
     public ResponseEntity<ResponseDTO> getAvailable() {
-        List<Pilot> all = pilotRepository.findAll();
         List<Pilot> available = new ArrayList<>();
-        for (Pilot p : all) {
+        for (Pilot p : PILOTS) {
             if ("ACTIVE".equalsIgnoreCase(p.getStatus())) {
                 available.add(p);
             }
@@ -40,12 +34,13 @@ public class PilotController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO> getById(@PathVariable String id) {
-        return pilotRepository.findAll().stream()
-                .filter(p -> Objects.equals(p.getId(), id))
-                .findFirst()
-                .<ResponseEntity<ResponseDTO>>map(p -> ResponseEntity.ok(new ResponseDTO(true, "OK", p)))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ResponseDTO(false, "Pilot not found", null)));
+        for (Pilot p : PILOTS) {
+            if (Objects.equals(p.getId(), id)) {
+                return ResponseEntity.ok(new ResponseDTO(true, "OK", p));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ResponseDTO(false, "Pilot not found", null));
     }
 
     @PostMapping
@@ -59,32 +54,37 @@ public class PilotController {
         // Ensure enums parsed if provided
         pilot.setRank(rank);
         pilot.setSpecialization(specialization);
-        pilotRepository.save(pilot);
+        PILOTS.add(pilot);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDTO(true, "Pilot created", Map.of("id", id)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO> update(@PathVariable String id, @RequestBody PilotDTO dto) {
-        List<Pilot> all = new ArrayList<>(pilotRepository.findAll());
-        Optional<Pilot> opt = all.stream().filter(p -> Objects.equals(p.getId(), id)).findFirst();
-        if (opt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO(false, "Pilot not found", null));
+        for (Pilot p : PILOTS) {
+            if (Objects.equals(p.getId(), id)) {
+                p.setName(dto.getName());
+                p.setStatus(dto.getStatus());
+                if (dto.getRank() != null) p.setRank(MilitaryRank.valueOf(dto.getRank()));
+                if (dto.getSpecialization() != null) p.setSpecialization(AircraftType.valueOf(dto.getSpecialization()));
+                if (dto.getFlightHours() != null) p.setFlightHours(dto.getFlightHours());
+                return ResponseEntity.ok(new ResponseDTO(true, "Pilot updated", Map.of("id", id)));
+            }
         }
-        Pilot p = opt.get();
-        p.setName(dto.getName());
-        p.setStatus(dto.getStatus());
-        if (dto.getRank() != null) p.setRank(MilitaryRank.valueOf(dto.getRank()));
-        if (dto.getSpecialization() != null) p.setSpecialization(AircraftType.valueOf(dto.getSpecialization()));
-        if (dto.getFlightHours() != null) p.setFlightHours(dto.getFlightHours());
-        pilotRepository.saveAll(all);
-        return ResponseEntity.ok(new ResponseDTO(true, "Pilot updated", Map.of("id", id)));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ResponseDTO(false, "Pilot not found", null));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO> delete(@PathVariable String id) {
-        pilotRepository.deleteById(id);
-        return ResponseEntity.ok(new ResponseDTO(true, "Pilot deleted", Map.of("id", id)));
+        Iterator<Pilot> it = PILOTS.iterator();
+        while (it.hasNext()) { // enhanced iteration over iterator
+            if (Objects.equals(it.next().getId(), id)) {
+                it.remove();
+                return ResponseEntity.ok(new ResponseDTO(true, "Pilot deleted", Map.of("id", id)));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ResponseDTO(false, "Pilot not found", null));
     }
 }
